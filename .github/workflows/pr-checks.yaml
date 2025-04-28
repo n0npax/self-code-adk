@@ -1,19 +1,16 @@
-name: build and publish
+name: test and build
 permissions:
   id-token: write
   contents: read
 
 on:
-  push:
+  pull_request:
     branches:
-      - main
+      - 'main'
 jobs:
-  build-and-publish:
+  build-and-test:
     name: python
     runs-on: ubuntu-latest
-    environment: 
-      name: pypi
-      url: https://pypi.org/project/self-code-adk
     steps:
       - uses: actions/checkout@v4
 
@@ -23,11 +20,12 @@ jobs:
       - name: Install the project
         run: uv sync --locked --all-extras --dev
 
+      - name: lint
+        run: uv run black --check
+
       - name: Run tests
         run: uv run pytest
 
       - name: Build
         run: uv build
       
-      - name: Publish
-        run: uv publish

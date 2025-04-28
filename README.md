@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/self-code-adk.svg)](https://badge.fury.io/py/self-code-adk)
+
 # self code adk
 
 Agent which can read code of currently running application and help analyzing it. Its main purpose is to assist in debugging the whole application by enabling the agent, defined as a developer and multi-agent expert, to read the entire codebase.

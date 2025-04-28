@@ -103,7 +103,7 @@ def autodiscover_possible_root_dir() -> list[str]:
 
         # handle venv, if `.anything/bin` or `.anything\Scripts` is at and of string, trim it and add again.
         # Modified regex to handle both forward and backslashes for different OS.
-        pattern = r"[/\\]\..+[/\\](bin|Scripts)$" # Also added Scripts for Windows venv
+        pattern = r"[/\\]\..+[/\\](bin|Scripts)$"  # Also added Scripts for Windows venv
         match = re.search(pattern, app_root_main)
         if match is not None:
             possible_roots.append(re.sub(pattern, "", app_root_main))
@@ -114,7 +114,7 @@ def autodiscover_possible_root_dir() -> list[str]:
     return list(set(possible_roots))
 
 
-def SelfCodeAgent(model:str = "gemini-2.0-flash-001"):
+def SelfCodeAgent(model: str = "gemini-2.0-flash-001"):
     return Agent(
         name="self_code_adk",
         model=model,
@@ -142,5 +142,6 @@ def SelfCodeAgent(model:str = "gemini-2.0-flash-001"):
         tools=[get_my_application_code, autodiscover_possible_root_dir],
     )
 
+
 # uncomment if you want to via: uv run adk web
-#root_agent = SelfCodeAgent()
+# root_agent = SelfCodeAgent()

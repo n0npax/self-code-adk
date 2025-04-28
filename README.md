@@ -12,12 +12,13 @@ uv add self-code-adk
 ### import it
 
 ```python
-from TODO_FIXME.agent import root_agent as self_code_agent
+from TODO_FIXME.agent import SelfCodeAgent
 ```
 
 ### And add new sub agent
 
 ```diff
++self_code_agent=SelfCodeAgent("gemini-2.5-flash-preview-04-17")
 root_agent = Agent(
     name="my-fancy-agen",
     model="gemini-2.5-flash-preview-04-17",

@@ -34,8 +34,6 @@ def get_my_application_code(
     # Ensure the root_dir is an absolute path for reliable relative path calculation
     root_dir = os.path.abspath(root_dir)
 
-    print(f"Starting to collect code from: {root_dir}")
-
     read_files_cnt = 0
     # Walk through the directory
     for dirpath, _, filenames in os.walk(root_dir):
@@ -49,10 +47,6 @@ def get_my_application_code(
             except ValueError:
                 # Handle cases where full_file_path and root_dir are on different drives on Windows
                 relative_file_path = full_file_path  # Use full path as fallback
-                print(
-                    f"Warning: Could not get relative path for {full_file_path}, using full path.",
-                    file=sys.stderr,
-                )
 
             # Skip common non-code/binary files or directories if necessary
             # You might want to add more filters here (e.g., images, logs, .git)
@@ -75,7 +69,6 @@ def get_my_application_code(
                 with open(full_file_path, "r", encoding="utf-8") as f:
                     content = f.read()
                 file_contents[relative_file_path] = content
-                # print(f"Read: {relative_file_path}") # Optional: for debugging
                 read_files_cnt += 1
 
             except UnicodeDecodeError:
@@ -85,14 +78,14 @@ def get_my_application_code(
                     f"[Error: Could not decode file as UTF-8 text: {full_file_path}]"
                 )
                 file_read_errors[relative_file_path] = error_msg
-                print(f"Could not decode: {relative_file_path}", file=sys.stderr)
+            except PermissionError as e:
+                error_msg = f"[Error: Permission denied reading file: {full_file_path} - {type(e).__name__} - {e}]"
+                file_read_errors[relative_file_path] = error_msg
             except Exception as e:
                 # Catch other potential errors during file reading (e.g., permissions, large files)
                 error_msg = f"[Error reading file: {full_file_path} - {e}]"
                 file_read_errors[relative_file_path] = error_msg
-                print(f"Error reading: {relative_file_path} - {e}", file=sys.stderr)
 
-    print(f"Finished collecting code. Found {len(file_contents)} files.")
     return file_contents, file_read_errors
 
 
@@ -106,45 +99,48 @@ def autodiscover_possible_root_dir() -> list[str]:
     try:
         main_script_path = os.path.abspath(sys.modules["__main__"].__file__)
         app_root_main = os.path.dirname(main_script_path)
-        print(f"Found application root from __main__.__file__: {app_root_main}")
         possible_roots.append(app_root_main)
 
-        # handle venv, if `.anything/bin` is at and of string, trim it and add again.
-        pattern = r"/\..+/bin$"
+        # handle venv, if `.anything/bin` or `.anything\Scripts` is at and of string, trim it and add again.
+        # Modified regex to handle both forward and backslashes for different OS.
+        pattern = r"[/\\]\..+[/\\](bin|Scripts)$" # Also added Scripts for Windows venv
         match = re.search(pattern, app_root_main)
         if match is not None:
             possible_roots.append(re.sub(pattern, "", app_root_main))
 
     except (AttributeError, KeyError):
-        print("Could not determine application root from __main__.__file__.")
         pass  # Continue to next fallback
 
     return list(set(possible_roots))
 
 
-root_agent = Agent(
-    name="self_code",
-    model="gemini-2.0-flash-001",
-    description=(
-        "Agent to read it's own multiagent application code and help with debugging and understanding of running multi agent ADK application"
-    ),
-    instruction="""
-        You are an agent that can access and analyze the source code of the application you are running within. You are expert programmer who specializes in python, LLMs and agentic app development.
+def SelfCodeAgent(model:str = "gemini-2.0-flash-001"):
+    return Agent(
+        name="self_code",
+        model=model,
+        description=(
+            "Agent to read it's own multiagent application code and help with debugging and understanding of running multi agent ADK application"
+        ),
+        instruction="""
+            You are an agent that can access and analyze the source code of the application you are running within. You are expert programmer who specializes in python, LLMs and agentic app development.
 
-        Important: Before attempting to read any code, ALWAYS use the 'autodiscover_possible_root_dir' tool to identify potential root directories. Present these options to the user and wait for confirmation before proceeding to read any files.
+            Important: Before attempting to read any code, ALWAYS use the 'autodiscover_possible_root_dir' tool to identify potential root directories. Present these options to the user and wait for confirmation before proceeding to read any files.
 
-        User 'autodiscover_possible_root_dir' tool to find out possible directories where app code is stored.
-        Use the 'get_my_application_code' tool when you need to see the application's source code to answer questions or understand its structure.
-        Focus on explaining the code based on the user's query.
+            User 'autodiscover_possible_root_dir' tool to find out possible directories where app code is stored.
+            Use the 'get_my_application_code' tool when you need to see the application's source code to answer questions or understand its structure.
+            Focus on explaining the code based on the user's query.
 
-        Important: user has to confirm directory with code before calling get_my_application_code. If not specified in prompts, you must suggest possible paths(call autodiscover_possible_root_dir), but you can't decide on root on your own.
-        If not specified by user, call get_my_application_code with only_py_files=True. Let them know you done it.
-        Do not require any additional confirmations just to show all possible root dirs.
+            Important: user has to confirm directory with code before calling get_my_application_code. If not specified in prompts, you must suggest possible paths(call autodiscover_possible_root_dir), but you can't decide on root on your own.
+            If not specified by user, call get_my_application_code with only_py_files=True. Let them know you done it.
+            Do not require any additional confirmations just to show all possible root dirs.
 
-        when returning results from autodiscover_possible_root_dir return list enumerated.
-        if reading files fails due to exceeding limit of allowed files, you can ask user if they want to run it again with increased param.
+            when returning results from autodiscover_possible_root_dir return list enumerated.
+            if reading files fails due to exceeding limit of allowed files, you can ask user if they want to run it again with increased param.
 
-        Important, in most scenarios you prefer to not get_my_application_code multiple times. For any subsequential call you need to confirm it with user. **YOU MUST AVOID REDUNDANT CALLS. Prioritize using the information from PREVIOUS get_my_application_code TOOL CALLS. Only call get_my_application_code if ABSOLUTELY necessary and you don't already have the required information.**    
-        """,
-    tools=[get_my_application_code, autodiscover_possible_root_dir],
-)
+            Important, in most scenarios you prefer to not get_my_application_code multiple times. For any subsequential call you need to confirm it with user. **YOU MUST AVOID REDUNDANT CALLS. Prioritize using the information from PREVIOUS get_my_application_code TOOL CALLS. Only call get_my_application_code if ABSOLUTELY necessary and you don't already have the required information.**    
+            """,
+        tools=[get_my_application_code, autodiscover_possible_root_dir],
+    )
+
+# uncomment if you want to via: uv run adk web
+#root_agent = SelfCodeAgent()

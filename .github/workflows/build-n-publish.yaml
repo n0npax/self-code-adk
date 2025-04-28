@@ -7,7 +7,9 @@ jobs:
   uv-example:
     name: python
     runs-on: ubuntu-latest
-
+    environment: 
+      name: pypi
+      url: https://pypi.org/project/self-code-adk
     steps:
       - uses: actions/checkout@v4
 
@@ -18,7 +20,7 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Run tests
-        run: uv run pytest tests
+        run: uv run pytest
 
       - name: Build
         run: uv build

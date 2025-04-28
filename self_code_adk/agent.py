@@ -116,7 +116,7 @@ def autodiscover_possible_root_dir() -> list[str]:
 
 def SelfCodeAgent(model:str = "gemini-2.0-flash-001"):
     return Agent(
-        name="self_code",
+        name="self_code_adk",
         model=model,
         description=(
             "Agent to read it's own multiagent application code and help with debugging and understanding of running multi agent ADK application"

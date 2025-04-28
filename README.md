@@ -37,8 +37,17 @@ root_agent = Agent(
 )
 ```
 
-## Considerations
+## Security considerations
 
 `self-code-adk` has access to app code and whole filesystem. It states a security risk and should never be run in production. It is designed purerly for local testing within trusted input.
 
 > Note: if instructed in malicious way, it can read any file. For example /etc/shadow
+
+## How it works
+
+In short it is an agent with 2 tools:
+
+1. find possible root directory with app code.
+2. read the content of repository
+
+Thats is all. LLM with instruction takes care of rest.

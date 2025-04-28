@@ -51,3 +51,7 @@ In short it is an agent with 2 tools:
 2. read the content of repository
 
 Thats is all. LLM with instruction takes care of rest.
+
+## Docs
+
+check [docs](./docs/) directory.

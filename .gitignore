@@ -172,3 +172,10 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+
+
+*.bkp
+*.bckp
+*.backup
+
+.DS_Store

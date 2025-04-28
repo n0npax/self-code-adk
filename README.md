@@ -18,7 +18,12 @@ from TODO_FIXME.agent import SelfCodeAgent
 ### And add new sub agent
 
 ```diff
-+self_code_agent=SelfCodeAgent("gemini-2.5-flash-preview-04-17")
+
+sub_agents=[gardener, weather],
++# include self_code_agent only for development purposes
++if dev_mode: 
++   self_code_agent=SelfCodeAgent("gemini-2.5-flash-preview-04-17")
++   sub_agents.append(self_code_agent)
 root_agent = Agent(
     name="my-fancy-agen",
     model="gemini-2.5-flash-preview-04-17",
@@ -28,6 +33,12 @@ root_agent = Agent(
         blah   
         """
     ),
-+    sub_agents=[gardener, weather, self_code_agent],
--    sub_agents=[gardener, weather],
-)```
+    sub_agents=sub_agent,
+)
+```
+
+## Considerations
+
+`self-code-adk` has access to app code and whole filesystem. It states a security risk and should never be run in production. It is designed purerly for local testing within trusted input.
+
+> Note: if instructed in malicious way, it can read any file. For example /etc/shadow

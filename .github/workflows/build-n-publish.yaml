@@ -1,5 +1,8 @@
 name: build and publish
-
+on:
+  push:
+    branches:
+      - main
 jobs:
   uv-example:
     name: python

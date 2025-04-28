@@ -8,6 +8,20 @@ dependencies = [
     "google-adk>=0.3.0",
 ]
 
+keywords = ["adk", "agent", "code-analyzer"]
+license = "MIT"
+authors = [
+  {name = "Marcin <n0npax> Niemira"},
+]
+maintainers = [
+  {name = "Marcin <n0npax> Niemira"},
+]
+
+[project.urls]
+Homepage = "https://github.com/n0npax/self-code-adk"
+Documentation = "https://github.com/n0npax/self-code-adk"
+Repository = "https://github.com/n0npax/self-code-adk"
+
 [dependency-groups]
 dev = [
     "pytest>=8.3.5",

@@ -12,7 +12,7 @@ uv add self-code-adk
 ### import it
 
 ```python
-from TODO_FIXME.agent import SelfCodeAgent
+from self_code_adk.agent import SelfCodeAgent
 ```
 
 ### And add new sub agent

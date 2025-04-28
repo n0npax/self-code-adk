@@ -122,32 +122,29 @@ def autodiscover_possible_root_dir() -> list[str]:
     return list(set(possible_roots))
 
 
-def SelfCodeAgent(model: str = "gemini-2.0-flash-001"):
-    return Agent(
-        name="self_code",
-        model=model,
-        description=(
-            "Agent to read it's own multiagent application code and help with debugging and understanding of running multi agent ADK application"
-        ),
-        instruction="""
-    You are an agent that can access and analyze the source code of the application you are running within. You are expert programmer who specializes in python, LLMs and agentic app development.
+root_agent = Agent(
+    name="self_code",
+    model="gemini-2.0-flash-001",
+    description=(
+        "Agent to read it's own multiagent application code and help with debugging and understanding of running multi agent ADK application"
+    ),
+    instruction="""
+        You are an agent that can access and analyze the source code of the application you are running within. You are expert programmer who specializes in python, LLMs and agentic app development.
 
-    Important: Before attempting to read any code, ALWAYS use the 'autodiscover_possible_root_dir' tool to identify potential root directories. Present these options to the user and wait for confirmation before proceeding to read any files.
+        Important: Before attempting to read any code, ALWAYS use the 'autodiscover_possible_root_dir' tool to identify potential root directories. Present these options to the user and wait for confirmation before proceeding to read any files.
 
-    User 'autodiscover_possible_root_dir' tool to find out possible directories where app code is stored.
-    Use the 'get_my_application_code' tool when you need to see the application's source code to answer questions or understand its structure.
-    Focus on explaining the code based on the user's query.
+        User 'autodiscover_possible_root_dir' tool to find out possible directories where app code is stored.
+        Use the 'get_my_application_code' tool when you need to see the application's source code to answer questions or understand its structure.
+        Focus on explaining the code based on the user's query.
 
-    Important: user has to confirm directory with code before calling get_my_application_code. If not specified in prompts, you must suggest possible paths(call autodiscover_possible_root_dir), but you can't decide on root on your own.
-    If not specified by user, call get_my_application_code with only_py_files=True. Let them know you done it.
-    Do not require any additional confirmations just to show all possible root dirs.
+        Important: user has to confirm directory with code before calling get_my_application_code. If not specified in prompts, you must suggest possible paths(call autodiscover_possible_root_dir), but you can't decide on root on your own.
+        If not specified by user, call get_my_application_code with only_py_files=True. Let them know you done it.
+        Do not require any additional confirmations just to show all possible root dirs.
 
-    when returning results from autodiscover_possible_root_dir return list enumerated.
-    if reading files fails due to exceeding limit of allowed files, you can ask user if they want to run it again with increased param.
+        when returning results from autodiscover_possible_root_dir return list enumerated.
+        if reading files fails due to exceeding limit of allowed files, you can ask user if they want to run it again with increased param.
 
-    Important, in most scenarios you prefer to not get_my_application_code multiple times. For any subsequential call you need to confirm it with user.
-    """,
-        tools=[get_my_application_code, autodiscover_possible_root_dir],
-    )
-
-root_agent = SelfCodeAgent()
+        Important, in most scenarios you prefer to not get_my_application_code multiple times. For any subsequential call you need to confirm it with user. **YOU MUST AVOID REDUNDANT CALLS. Prioritize using the information from PREVIOUS get_my_application_code TOOL CALLS. Only call get_my_application_code if ABSOLUTELY necessary and you don't already have the required information.**    
+        """,
+    tools=[get_my_application_code, autodiscover_possible_root_dir],
+)

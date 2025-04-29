@@ -43,7 +43,7 @@ root_agent = Agent(
 
 `self-code-adk` has access to app code and whole filesystem. It states a security risk and should never be run in production. It is designed purerly for local testing within trusted input.
 
-> Note: if instructed in malicious way, it can read any file. For example /etc/shadow
+> Note: if instructed in malicious way, it can read any file. For example /etc/shadow. Even if LLM will reject request initialy, there is no secondary protection in place.
 
 ## How it works
 
@@ -56,4 +56,4 @@ Thats is all. LLM with instruction takes care of rest.
 
 ## Docs
 
-check [docs](./docs/) directory.
+check [docs](./docs/) directory and [medium](https://medium.com/me/stats/post/d8c08464f293)

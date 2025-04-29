@@ -1,6 +1,6 @@
 [project]
 name = "self-code-adk"
-version = "0.1.4"
+version = "0.1.5"
 description = "ADK agent which help in analysing currently running multiagent app"
 readme = "README.md"
 requires-python = ">=3.12"

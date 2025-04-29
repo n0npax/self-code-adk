@@ -16,6 +16,17 @@ jobs:
       url: https://pypi.org/project/self-code-adk
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2  # Fetch the last two commits to check for file changes
+
+      - name: Check if pyproject.toml was modified
+        id: check-pyproject
+        run: |
+          if git diff --name-only HEAD^ HEAD | grep -q "pyproject.toml"; then
+            echo "pyproject_modified=true" >> $GITHUB_OUTPUT
+          else
+            echo "pyproject_modified=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Install uv
         uses: astral-sh/setup-uv@v5
@@ -30,4 +41,5 @@ jobs:
         run: uv build
       
       - name: Publish
+        if: steps.check-pyproject.outputs.pyproject_modified == 'true'
         run: uv publish

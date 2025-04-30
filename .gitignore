@@ -179,3 +179,4 @@ cython_debug/
 *.backup
 
 .DS_Store
+junit.xml

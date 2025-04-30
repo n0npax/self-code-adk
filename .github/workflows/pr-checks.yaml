@@ -24,7 +24,7 @@ jobs:
         run: uv sync --all-extras --dev
 
       - name: lint
-        run: uv run black --check
+        run: uv run black --check self_code_adk
 
       - name: Run tests with coverage
         run: uv run pytest

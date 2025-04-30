@@ -35,5 +35,5 @@ where = ["self_code_adk"]
 exclude = ["*_test.py", "*.tests", "*.tests.*"]
 
 [tool.pytest.ini_options]
-addopts = "--cov=self_code_adk --cov-report=xml:coverage.xml --cov-report=term"
+addopts = "--cov=self_code_adk --cov-report=xml:coverage.xml --cov-report=term --junitxml=junit.xml -o junit_family=legacy"
 testpaths = ["self_code_adk"]

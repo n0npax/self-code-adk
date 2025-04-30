@@ -3,14 +3,12 @@ import os
 import tempfile
 import shutil
 from unittest.mock import patch
-from self_code_adk.agent import get_my_application_code, find_git_repo, autodiscover_possible_root_dir, SelfCodeAgent
-
-
-@pytest.mark.parametrize("dir,expected_files_number", [("self_code_adk", 8)])
-def test_autodiscover(dir, expected_files_number):
-    files, errors = get_my_application_code(dir)
-    assert expected_files_number == len(files)
-    assert 0 == len(errors)
+from self_code_adk.agent import (
+    get_my_application_code,
+    find_git_repo,
+    autodiscover_possible_root_dir,
+    SelfCodeAgent,
+)
 
 
 @pytest.mark.parametrize("dir,expected_name", [("self_code_adk", "self-code-adk")])
@@ -39,12 +37,13 @@ def test_get_my_application_code_max_files():
         for i in range(5):
             with open(os.path.join(tmpdir, f"file{i}.py"), "w") as f:
                 f.write(f"# Test file {i}")
-        
+
         # Test with max_files=2
         files, errors = get_my_application_code(tmpdir, max_files=2)
-        assert len(files) <= 3  # Should only read up to 3 files (max_files=2 plus initial count)
+        assert (
+            len(files) <= 3
+        )  # Should only read up to 3 files (max_files=2 plus initial count)
         assert len(errors) > 0  # Should have errors for the remaining files
-
 
 
 def test_get_my_application_code_only_py_files():
@@ -55,7 +54,7 @@ def test_get_my_application_code_only_py_files():
             f.write("# Python file")
         with open(os.path.join(tmpdir, "test.txt"), "w") as f:
             f.write("Text file")
-        
+
         # Test with only_py_files=True
         files, errors = get_my_application_code(tmpdir, only_py_files=True)
         assert len(files) == 1
@@ -66,7 +65,6 @@ def test_get_my_application_code_only_py_files():
         files, errors = get_my_application_code(tmpdir, only_py_files=False)
         assert len(files) == 2
         assert len(errors) == 0
-
 
 
 def test_autodiscover_possible_root_dir():

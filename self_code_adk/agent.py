@@ -4,6 +4,7 @@ import re
 from google.adk.agents import Agent
 from pathlib import Path
 
+
 def get_my_application_code(
     root_dir: str, only_py_files: bool = False, max_files: int = 100
 ) -> list[dict[str, str], dict[str, str]]:
@@ -111,7 +112,6 @@ def autodiscover_possible_root_dir() -> list[str]:
     except (AttributeError, KeyError):
         pass  # Continue to next fallback
 
-    
     # iterate over a copy of possible_roots.
     for d in possible_roots[:]:
         try:
@@ -123,47 +123,47 @@ def autodiscover_possible_root_dir() -> list[str]:
     return list(set(possible_roots))
 
 
-
 def find_git_repo(start_path: str) -> str:
     """
     Find the closest .git repository directory by traversing upwards from the given path.
     Returns the absolute path to the repository root (the directory containing the .git folder),
     or None if no repository is found.
-    
+
     Args:
         start_path: The path to start searching from
-        
+
     Returns:
         The absolute path to the repository root, or Exception if not found
-    
+
     Works on both Windows and Unix-like systems (Linux, macOS).
     """
     # Convert to absolute path and resolve symlinks
     current_path = Path(os.path.abspath(os.path.expanduser(start_path)))
-    
+
     # Check if the path exists
     if not current_path.exists():
         raise FileNotFoundError(f"The path {start_path} does not exist")
-    
+
     # If the path is a file, start from its parent directory
     if current_path.is_file():
         current_path = current_path.parent
-    
+
     # Traverse up the directory tree
     while True:
         # Check if .git directory exists in the current path
         git_dir = current_path / ".git"
-        
+
         # Check for both directory and file (for git submodules, .git might be a file)
         if git_dir.exists():
             return str(current_path)
-        
+
         # Check if we've reached the root
-        parent_path = current_path.parent        
+        parent_path = current_path.parent
         if parent_path == current_path:
             raise Exception("not in git repo")
-        
+
         current_path = parent_path
+
 
 def SelfCodeAgent(model: str = "gemini-2.0-flash-001"):
     return Agent(

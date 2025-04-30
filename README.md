@@ -67,6 +67,10 @@ Thats is all. LLM with instruction takes care of rest.
 
 Here is screenshot of sample chat of multiagent app. App contains few agents, and one of them is returning capital cities for a country using a tool. Once asked, `self-code` agent reads and provides feedback on code quality.
 
+I'm usually asking questions like:
+- do you see any issues with current code?
+- **you didn't do `xyz`, how to adjust your prompt, so next time you would act differently**
+
 ![sample chat](assets/sample-chat.png "Sample chat")
 
 ## name

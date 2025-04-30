@@ -39,6 +39,17 @@ def test_get_my_application_code_permission_denied_linux():
     assert "shadow" in errors
     assert "Permission denied" in errors["shadow"]
 
+def test_get_my_application_code_unicode_Error():
+    with tempfile.TemporaryDirectory() as tmpdir:
+        with open(os.path.join(tmpdir, f"file.py"), "wb") as f:
+            f.write(b"An incomplete multi-byte sequence")
+            f.write(b'\xc3') # breaks utf-8
+
+        files, errors = get_my_application_code(tmpdir)
+        assert len(files) == 0 
+        assert len(errors) > 0
+        assert "Could not decode file as UTF-8 " in errors["file.py"]
+
 
 def test_get_my_application_code_error_handling():
     # Test with non-existent directory

@@ -1,4 +1,5 @@
 [![PyPI version](https://badge.fury.io/py/self-code-adk.svg)](https://badge.fury.io/py/self-code-adk)
+[![codecov](https://codecov.io/gh/n0npax/self-code-adk/graph/badge.svg)](https://codecov.io/gh/n0npax/self-code-adk)
 
 # self code adk
 

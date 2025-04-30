@@ -24,10 +24,16 @@ Repository = "https://github.com/n0npax/self-code-adk"
 
 [dependency-groups]
 dev = [
+    "bandit>=1.8.3",
     "black>=25.1.0",
     "pytest>=8.3.5",
+    "pytest-cov>=5.0.0",
 ]
 
 [tool.setuptools.packages.find]
 where = ["self_code_adk"]
 exclude = ["*_test.py", "*.tests", "*.tests.*"]
+
+[tool.pytest.ini_options]
+addopts = "--cov=self_code_adk --cov-report=xml:coverage.xml --cov-report=term"
+testpaths = ["self_code_adk"]

@@ -61,7 +61,7 @@ def get_my_application_code(
             try:
                 if read_files_cnt > max_files:
                     file_read_errors[relative_file_path] = (
-                        "already read {max_files}. This read exceeds defined limit, so skipping it. You can rerun function with bigger max_files param."
+                        f"already read {max_files}. This read exceeds defined limit, so skipping it. You can rerun function with bigger max_files param."
                     )
                     continue
                 # Attempt to read the file content as UTF-8 text

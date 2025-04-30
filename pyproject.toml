@@ -1,6 +1,6 @@
 [project]
 name = "self-code-adk"
-version = "0.1.7"
+version = "0.1.8"
 description = "ADK agent which help in analysing currently running multiagent app"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -30,3 +30,4 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["self_code_adk"]
+exclude = ["*_test.py", "*.tests", "*.tests.*"]

@@ -195,4 +195,4 @@ def SelfCodeAgent(model: str = "gemini-2.0-flash-001"):
 
 
 # uncomment if you want to via: uv run adk web
-root_agent = SelfCodeAgent()
+# root_agent = SelfCodeAgent()

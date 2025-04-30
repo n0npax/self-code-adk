@@ -3,7 +3,9 @@
 
 # self code adk
 
-Agent which can read code of currently running application and help analyzing it. Its main purpose is to assist in debugging the whole application by enabling the agent, defined as a developer and multi-agent expert, to read the entire codebase.
+Agent which can read code of currently running application and help analyzing it.
+Its main purpose is to assist in debugging the whole application. It is defined as a developer and multi-agent expert which can read the entire codebase.
+For example, you can ask it how to adjust other agents prompt when they don't act as intented.
 
 ## usage
 

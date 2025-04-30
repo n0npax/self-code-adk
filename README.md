@@ -54,6 +54,18 @@ In short it is an agent with 2 tools:
 
 Thats is all. LLM with instruction takes care of rest.
 
-## Docs
+## design
 
-check [docs](./docs/) directory and [medium](https://medium.com/me/stats/post/d8c08464f293)
+`self-code` is just an agent which can access the code. It can be plugged into an multiagent app and then app relevant questions will be delegated on demand.
+
+![design](assets/multiagent.drawio.png "design")
+
+## sample chat
+
+Here is screenshot of sample chat of multiagent app. App contains few agents, and one of them is returning capital cities for a country using a tool. Once asked, `self-code` agent reads and provides feedback on code quality.
+
+![sample chat](assets/sample-chat.png "Sample chat")
+
+## idea definition
+
+[medium](https://medium.com/me/stats/post/d8c08464f293)

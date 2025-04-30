@@ -1,6 +1,6 @@
 [project]
 name = "self-code-adk"
-version = "0.1.6"
+version = "0.1.7"
 description = "ADK agent which help in analysing currently running multiagent app"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -27,3 +27,6 @@ dev = [
     "black>=25.1.0",
     "pytest>=8.3.5",
 ]
+
+[tool.setuptools.packages.find]
+where = ["self_code_adk"]

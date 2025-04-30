@@ -55,6 +55,8 @@ In short it is an agent with 2 tools:
 
 Thats is all. LLM with instruction takes care of rest.
 
+[medium](https://medium.com/me/stats/post/d8c08464f293)
+
 ## design
 
 `self-code` is just an agent which can access the code. It can be plugged into an multiagent app and then app relevant questions will be delegated on demand.
@@ -67,6 +69,6 @@ Here is screenshot of sample chat of multiagent app. App contains few agents, an
 
 ![sample chat](assets/sample-chat.png "Sample chat")
 
-## idea definition
+## name
 
-[medium](https://medium.com/me/stats/post/d8c08464f293)
+In Python, `self` is used to refer to attributes within a class instance. This agent accesses application source code, so its name was intended to mimic the `self.code` approach.

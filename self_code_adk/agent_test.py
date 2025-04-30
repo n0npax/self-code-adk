@@ -1,7 +1,7 @@
 import pytest
+import sys
 import os
 import tempfile
-import shutil
 from unittest.mock import patch
 from self_code_adk.agent import (
     get_my_application_code,
@@ -20,6 +20,24 @@ def test_find_git_repo(dir, expected_name):
 def test_find_git_repo_non_exiting_path():
     with pytest.raises(Exception):
         find_git_repo("/no/such/path")
+
+
+@pytest.mark.skipif(sys.platform != "darwin", reason="runs only on MacOS")
+def test_get_my_application_code_permission_denied_mac():
+    # Test with non-existent directory
+    _, errors = get_my_application_code(
+        "/private/etc", only_py_files=False, max_files=200
+    )
+    assert "sudoers" in errors
+    assert "Permission denied" in errors["sudoers"]
+
+
+@pytest.mark.skipif(sys.platform != "linux", reason="runs only on linux")
+def test_get_my_application_code_permission_denied_linux():
+    # Test with non-existent directory
+    _, errors = get_my_application_code("/etc", only_py_files=False, max_files=200)
+    assert "shadow" in errors
+    assert "Permission denied" in errors["shadow"]
 
 
 def test_get_my_application_code_error_handling():

@@ -5,7 +5,7 @@
 
 Agent which can read code of currently running application and help analyzing it.
 Its main purpose is to assist in debugging the whole application. It is defined as a developer and multi-agent expert which can read the entire codebase.
-For example, you can ask it how to adjust other agents prompt when they don't act as intented.
+For example, you can ask it how to **adjust other agents prompts** when they don't act as intented.
 
 ## usage
 

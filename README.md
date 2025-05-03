@@ -46,18 +46,18 @@ root_agent = Agent(
 
 `self-code-adk` has access to app code and whole filesystem. It states a security risk and should never be run in production. It is designed purerly for local testing within trusted input.
 
-> Note: if instructed in malicious way, it can read any file. For example /etc/shadow. Even if LLM will reject request initialy, there is no secondary protection in place.
+> Note: if LLM instructed in malicious way, it may read any file. For example /etc/shadow. Even if LLM will reject request initialy, there is no secondary protection in place.
 
 ## How it works
 
 In short it is an agent with 2 tools:
 
-1. find possible root directory with app code.
+1. find possible root directory with app code and confirm selection with operator.
 2. read the content of repository
 
 Thats is all. LLM with instruction takes care of rest.
 
-[medium](https://medium.com/me/stats/post/d8c08464f293)
+> Note: Attempt to discover the source directory and confirm it with operator exists as there is no clear way to auto-discover it in resiliant way. Entrypoint of program varies depending on how it was started, for example `gunicorn`, `uv`, direct execution, etc.
 
 ## design
 
@@ -78,3 +78,7 @@ I'm usually asking questions like:
 ## name
 
 In Python, `self` is used to refer to attributes within a class instance. This agent accesses application source code, so its name was intended to mimic the `self.code` approach.
+
+---
+
+[medium article](https://medium.com/me/stats/post/d8c08464f293)

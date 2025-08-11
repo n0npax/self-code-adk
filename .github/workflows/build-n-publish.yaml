@@ -15,7 +15,7 @@ jobs:
       name: pypi
       url: https://pypi.org/project/self-code-adk
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 2  # Fetch the last two commits to check for file changes
 
